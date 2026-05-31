@@ -194,7 +194,9 @@ export const useSidebarStore = create<SidebarStore>()(
           if (!payload) return
           get().applyRunUpdate(payload)
           set((state) => ({ crawler: { ...state.crawler, recoveryNotice: '已恢复最近一次运行任务的状态展示。' } }))
-        } catch {}
+        } catch (error) {
+          console.error('[SmartScraper] resumeRunIfNeeded failed:', error)
+        }
       },
       stopRun: async () => {
         await browserRuntime.stopBrowserRun()

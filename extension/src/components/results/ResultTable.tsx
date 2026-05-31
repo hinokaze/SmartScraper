@@ -120,7 +120,7 @@ export default function ResultTable({
 }
 
 function renderCell(field: TemplateField, value: unknown) {
-  if (!value) {
+  if (value == null || value === '') {
     return <span className="ss-muted">--</span>
   }
 

@@ -131,7 +131,7 @@ export default function NavigationModeStep({
                 min={1}
                 max={200}
                 value={navigation.clickConfig.pageLimit}
-                onChange={(event) => onUpdateClickConfig({ pageLimit: Number(event.target.value) })}
+                onChange={(event) => onUpdateClickConfig({ pageLimit: Math.max(1, Math.min(200, parseInt(event.target.value, 10) || 5)) })}
               />
             </label>
             <label className="ss-field">
@@ -141,7 +141,7 @@ export default function NavigationModeStep({
                 min={200}
                 step={100}
                 value={navigation.clickConfig.delayMs}
-                onChange={(event) => onUpdateClickConfig({ delayMs: Number(event.target.value) })}
+                onChange={(event) => onUpdateClickConfig({ delayMs: Math.max(200, parseInt(event.target.value, 10) || 1200) })}
               />
             </label>
             <label className="ss-checkbox">
@@ -172,7 +172,7 @@ export default function NavigationModeStep({
                 min={1}
                 max={50}
                 value={navigation.scrollConfig.scrollCount}
-                onChange={(event) => onUpdateScrollConfig({ scrollCount: Number(event.target.value) })}
+                onChange={(event) => onUpdateScrollConfig({ scrollCount: Math.max(1, Math.min(50, parseInt(event.target.value, 10) || 6)) })}
               />
             </label>
             <label className="ss-field">
@@ -182,7 +182,7 @@ export default function NavigationModeStep({
                 min={300}
                 step={100}
                 value={navigation.scrollConfig.intervalMs}
-                onChange={(event) => onUpdateScrollConfig({ intervalMs: Number(event.target.value) })}
+                onChange={(event) => onUpdateScrollConfig({ intervalMs: Math.max(300, parseInt(event.target.value, 10) || 1200) })}
               />
             </label>
           </div>

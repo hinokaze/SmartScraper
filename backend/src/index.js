@@ -3,7 +3,7 @@ import cors from 'cors'
 import express from 'express'
 
 const app = express()
-const port = Number(process.env.PORT || 3000)
+const port = parseInt(process.env.PORT, 10) || 3000
 const openAiBaseUrl = normalizeBaseUrl(process.env.OPENAI_BASE_URL || 'http://127.0.0.1:1234')
 const openAiApiKey = process.env.OPENAI_API_KEY || ''
 const openAiModel = process.env.OPENAI_MODEL || 'qwen/qwen3.5-9b'
@@ -18,7 +18,6 @@ app.get('/health', (_request, response) => {
     configured: isConfigured(),
     model: openAiModel,
     baseUrl: openAiBaseUrl,
-    authMode: openAiApiKey ? 'bearer' : 'none',
   })
 })
 
@@ -242,17 +241,30 @@ async function fetchOpenAi({ body }) {
     headers.Authorization = `Bearer ${openAiApiKey}`
   }
 
-  const result = await fetch(`${openAiBaseUrl}/chat/completions`, {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(body),
-  })
+  const controller = new AbortController()
+  const timeout = setTimeout(() => controller.abort(), 60_000)
 
-  const payload = await result.json().catch(() => ({}))
-  return {
-    ok: result.ok,
-    status: result.status,
-    payload,
+  try {
+    const result = await fetch(`${openAiBaseUrl}/chat/completions`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    })
+
+    const payload = await result.json().catch(() => ({}))
+    return {
+      ok: result.ok,
+      status: result.status,
+      payload,
+    }
+  } catch (error) {
+    if (error?.name === 'AbortError') {
+      throw createHttpError(504, '模型调用超时，请稍后重试。')
+    }
+    throw createHttpError(502, `模型调用失败: ${error?.message || '网络错误'}`)
+  } finally {
+    clearTimeout(timeout)
   }
 }
 
@@ -308,9 +320,8 @@ function createHttpError(status, message) {
 
 function handleError(response, error) {
   const status = error?.status || 500
-  response.status(status).json({
-    error: error?.message || '服务器错误。',
-  })
+  const message = error instanceof Error ? error.message : typeof error === 'string' ? error : '服务器错误。'
+  response.status(status).json({ error: message })
 }
 
 function normalizeBaseUrl(input) {

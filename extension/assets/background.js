@@ -135,6 +135,7 @@ async function stopBrowserRun() {
 async function extractDetailSample(payload) {
   if (!payload?.url) throw new Error('缺少样本详情页 URL。')
   const detailTab = await chrome.tabs.create({ url: payload.url, active: false })
+  if (!detailTab?.id) throw new Error('无法创建详情页标签。')
   try {
     await waitForTabComplete(detailTab.id)
     return await relayToTab(detailTab.id, ACTIONS.EXTRACT_DETAIL_PAGE, { fields: payload.fields })
@@ -226,6 +227,7 @@ async function executeBrowserRun(tabId, payload) {
 
         await updateStep(tabId, 'open_detail', 'running', `正在打开详情页 ${index + 1} / ${detailRows.length}`, detailUrl)
         const detailTab = await chrome.tabs.create({ url: detailUrl, active: false })
+        if (!detailTab?.id) throw new Error(`无法创建详情页标签: ${detailUrl}`)
         try {
           await waitForTabComplete(detailTab.id)
           await updateStep(tabId, 'extract_detail', 'running', `正在提取详情字段 ${index + 1} / ${detailRows.length}`, detailUrl)

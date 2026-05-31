@@ -265,12 +265,17 @@
     return root.querySelector('h2, h3, p, span, a, img')
   }
 
+  const isSafeUrl = (url) => typeof url === 'string' && /^https?:\/\//i.test(url)
+
   const extractFieldValue = (root, field) => {
     const target = field.selector ? safeQuerySelector(root, field.selector) : findFallbackTarget(root, field)
     if (!target) return null
 
     if (field.attribute) return target.getAttribute(field.attribute)
-    if (field.type === 'url') return target.href || target.getAttribute('href') || null
+    if (field.type === 'url') {
+      const url = target.href || target.getAttribute('href') || null
+      return isSafeUrl(url) ? url : null
+    }
     if (field.type === 'image') return target.currentSrc || target.src || target.getAttribute('src') || null
     if (field.type === 'date') return target.getAttribute('datetime') || target.getAttribute('content') || getText(target)
     if (field.type === 'long_text') return summarize(target.innerText || target.textContent || '', 4000)
@@ -396,6 +401,14 @@
 
   const pickPaginationTarget = () =>
     new Promise((resolve) => {
+      let resolved = false
+      const resolveOnce = (value) => {
+        if (resolved) return
+        resolved = true
+        cleanup()
+        resolve(value)
+      }
+
       const overlay = document.createElement('div')
       const badge = document.createElement('div')
       overlay.style.position = 'fixed'
@@ -413,9 +426,12 @@
       badge.style.background = 'rgba(10, 13, 19, 0.92)'
       badge.style.color = '#fff'
       badge.style.font = '600 12px/1.4 Segoe UI, sans-serif'
-      badge.textContent = '点击网页中的“下一页”元素，按 Esc 取消'
+      badge.textContent = '点击网页中的”下一页”元素，按 Esc 取消'
+
+      const timeoutId = setTimeout(() => resolveOnce(null), 60000)
 
       const cleanup = () => {
+        clearTimeout(timeoutId)
         overlay.remove()
         badge.remove()
         document.removeEventListener('mousemove', onMove, true)
@@ -439,8 +455,7 @@
         if (!(target instanceof Element)) return
         event.preventDefault()
         event.stopPropagation()
-        cleanup()
-        resolve({
+        resolveOnce({
           selector: getUniqueSelector(target),
           label: getText(target) || '下一页按钮',
           anchorText: getText(target),
@@ -449,8 +464,7 @@
 
       const onKeyDown = (event) => {
         if (event.key !== 'Escape') return
-        cleanup()
-        resolve(null)
+        resolveOnce(null)
       }
 
       document.body.appendChild(overlay)
