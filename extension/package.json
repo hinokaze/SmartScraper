@@ -1,0 +1,27 @@
+{
+  "name": "smartscraper-extension",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && node copy-assets.cjs",
+    "watch": "vite build --watch",
+    "preview": "vite preview",
+    "dev:watch": "npm run watch"
+  },
+  "dependencies": {
+    "@types/chrome": "^0.1.38",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^6.0.2",
+    "xlsx": "^0.18.5",
+    "zustand": "^5.0.12"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.43",
+    "@types/react-dom": "^18.2.17",
+    "@vitejs/plugin-react": "^4.2.1",
+    "vite": "^5.0.8"
+  }
+}

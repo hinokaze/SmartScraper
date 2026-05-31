@@ -1,0 +1,42 @@
+{
+  "extName": {
+    "message": "SmartScraper - AI Web Scraper",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Intelligently extract web data using AI technology, supports multiple data format exports",
+    "description": "Extension description"
+  },
+  "extIconTitle": {
+    "message": "SmartScraper",
+    "description": "Extension icon hover title"
+  },
+  "actionNewTask": {
+    "message": "New Task",
+    "description": "Create new task button text"
+  },
+  "actionOpenPanel": {
+    "message": "Open Side Panel",
+    "description": "Open side panel button text"
+  },
+  "notificationTaskComplete": {
+    "message": "Task Complete",
+    "description": "Task complete notification title"
+  },
+  "notificationTaskCompleteMessage": {
+    "message": "Your data extraction task has been completed",
+    "description": "Task complete notification message"
+  },
+  "notificationError": {
+    "message": "Error Occurred",
+    "description": "Error notification title"
+  },
+  "contextMenuScrape": {
+    "message": "Scrape this page with SmartScraper",
+    "description": "Context menu item"
+  },
+  "contextMenuScrapeSelection": {
+    "message": "Scrape selection with SmartScraper",
+    "description": "Context menu selection item"
+  }
+}

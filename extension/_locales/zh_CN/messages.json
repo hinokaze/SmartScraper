@@ -1,0 +1,42 @@
+{
+  "extName": {
+    "message": "SmartScraper - AI 智能网页爬虫",
+    "description": "扩展名称"
+  },
+  "extDescription": {
+    "message": "使用 AI 技术智能提取网页数据，支持多种数据格式导出",
+    "description": "扩展描述"
+  },
+  "extIconTitle": {
+    "message": "SmartScraper",
+    "description": "扩展图标悬停标题"
+  },
+  "actionNewTask": {
+    "message": "创建新任务",
+    "description": "创建新任务按钮文本"
+  },
+  "actionOpenPanel": {
+    "message": "打开侧边栏",
+    "description": "打开侧边栏按钮文本"
+  },
+  "notificationTaskComplete": {
+    "message": "任务完成",
+    "description": "任务完成通知标题"
+  },
+  "notificationTaskCompleteMessage": {
+    "message": "您的数据提取任务已完成",
+    "description": "任务完成通知消息"
+  },
+  "notificationError": {
+    "message": "发生错误",
+    "description": "错误通知标题"
+  },
+  "contextMenuScrape": {
+    "message": "使用 SmartScraper 提取此页面",
+    "description": "右键菜单项"
+  },
+  "contextMenuScrapeSelection": {
+    "message": "使用 SmartScraper 提取选中内容",
+    "description": "右键菜单选中项"
+  }
+}
