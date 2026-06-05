@@ -31,7 +31,7 @@ export default function WizardShell({
 
         <div className="ss-panel__header-right">
           <div className="ss-header-metric">
-            <span>主流程进度</span>
+            <span>进度</span>
             <strong>{Math.round((step / total) * 100)}%</strong>
           </div>
           <ProgressBar value={(step / total) * 100} />
